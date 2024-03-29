@@ -1,6 +1,10 @@
+import React, { useState } from 'react';
 import {TextInput, View} from "react-native";
+import {Picker} from "@react-native-picker/picker";
 
 function Footer() {
+    const [selectedValue, setSelectedValue] = useState(null);
+
     return (
         <View style={{
             width: '100%',
@@ -20,7 +24,16 @@ function Footer() {
                 padding: 5,
                 borderRadius: 5,
             }}
-            placeholder={"Find a character.."}/>
+                       placeholder={"Find a character.."}/>
+            <Picker
+                selectedValue={selectedValue}
+                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+            >
+                <Picker.Item label="Amber" value="Amber Test" />
+                <Picker.Item label="Albedo" value="Albedo Test" />
+                <Picker.Item label="Zhongli" value="Zhongli Test" />
+                <Picker.Item label="Hu-tao" value="Hu-tao Test" />
+            </Picker>
         </View>
     );
 }
