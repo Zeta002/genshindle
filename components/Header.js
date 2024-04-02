@@ -5,8 +5,15 @@ function Header () {
     return (
         <View>
             <Text>Genshindle</Text>
-            <Image source={
-                {uri}} width={120} height={80}></Image>
+            <View>
+                <Image source={
+                    {uri}} width={120} height={80}></Image>
+                <View>
+                    <Text>try 5/5</Text>
+                    <Text>Winstreak : </Text>
+                    <Text>Best Winstreak : </Text>
+                </View>
+            </View>
         </View>
 
     );
