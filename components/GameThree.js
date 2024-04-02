@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, FlatList } from 'react-native';
 import axios from 'axios';
-import {Table, Row, Rows} from 'react-native-table-component';
 
 const API_URL = 'https://genshin.jmp.blue/characters';
 // Définition des versions
@@ -35,7 +34,8 @@ const versions = {
   '2023-09-27': '4.1',
   '2023-11-08': '4.2',
   '2023-12-20': '4.3',
-  '2024-01-31': '4.4'
+  '2024-01-31': '4.4',
+  '2024-03-13': '4.5'
 };
 
 const App = () => {
@@ -48,13 +48,7 @@ const App = () => {
   const [proposal, setProposal] = useState([]);
   const [feedback, setFeedback] = useState('');
 
-  const [guesses, setGuesses] = useState([{
-    name: 'Aucune supposition',
-    vision: '',
-    weapon: '',
-    nation: '',
-    version: ''
-  }]);
+  const [guesses, setGuesses] = useState([]);
 
   const fetchCharacters = async () => {
     setIsLoaded(false); // Définir l'état de chargement sur false pendant la récupération des données
@@ -157,16 +151,36 @@ const App = () => {
           <Text style={styles.selectedCharacter}>Personnage sélectionné : {selectedCharacter.name}</Text>
         </View>
         <Text>Propositions :</Text>
-        <View style={styles.tabContainer}>
-          <Table borderStyle={{borderWidth: 1, borderColor: '#c8e1ff'}} style={styles.tab}>
-            <Row data={['Name', 'Vision', 'Weapon', 'Nation', 'Version']} style={styles.head} textStyle={styles.text}/>
-            <Rows data={guesses.map(guess =>
-              console.log(guess) ||
-              [guess.name, guess.vision, guess.weapon, guess.nation, guess.version])}
-                  textStyle={styles.text}
-                  style={styles.rows}/>
-          </Table>
-        </View>
+        <View style={styles.columnNames}>
+            <Text style={styles.columnName}>Name</Text>
+            <Text style={styles.columnName}>Vision</Text>
+            <Text style={styles.columnName}>Weapon</Text>
+            <Text style={styles.columnName}>Nation</Text>
+            <Text style={styles.columnName}>Version</Text>
+          </View>
+        <FlatList
+            data={guesses}
+            renderItem={({ item }) => (
+              <View style={styles.guessItem}>
+                <Text style={{ color: item.name.toLowerCase() === selectedCharacter.name.toLowerCase() ? 'green' : 'red' }}>
+                  {item.name}
+                </Text>
+                <Text style={{ color: item.vision.toLowerCase() === selectedCharacter.vision.toLowerCase() ? 'green' : 'red' }}>
+                  {item.vision}
+                </Text>
+                <Text style={{ color: item.weapon.toLowerCase() === selectedCharacter.weapon.toLowerCase() ? 'green' : 'red' }}>
+                  {item.weapon}
+                </Text>
+                <Text style={{ color: item.nation.toLowerCase() === selectedCharacter.nation.toLowerCase() ? 'green' : 'red' }}>
+                  {item.nation}
+                </Text>
+                <Text style={{ color: item.version.toLowerCase() === selectedCharacter.version.toLowerCase() ? 'green' : 'red' }}>
+                  {item.version}
+                </Text>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
         {!gameOver ? (
           <View>
             <TextInput
@@ -175,10 +189,10 @@ const App = () => {
               value={search}
               placeholder="Entrez un personnage"
             />
-            <Button title="Devinez" onPress={() => findCharacter(search)}/>
+            <Button title="Devinez" onPress={() => findCharacter(search)} />
           </View>
         ) : (
-          <Button title="Nouvelle partie" onPress={startNewGame}/>
+          <Button title="Nouvelle partie" onPress={startNewGame} />
         )}
         <Text style={styles.feedback}>{feedback}</Text>
       </View>
@@ -231,32 +245,27 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 10,
   },
+  guessItem: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      borderBottomWidth: 1,
+      paddingVertical: 10,
+      paddingHorizontal: 5,
+      borderColor: '#ccc',
+      width: '100%',
+  },
+  columnNames: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingHorizontal: 10,
+      width: '100%',
+  },
+  columnName: {
+    fontWeight: 'bold',
+  },
   feedback: {
     marginTop: 20,
   },
-  tabContainer: {
-    flex: 1,
-    padding: 16,
-    paddingTop: 30,
-  },
-  tab: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
-  head: {
-    height: 40,
-    backgroundColor: '#f1f8ff'
-  },
-  rows: {
-    height: 30,
-    width: '100%'
-  },
-  text: {
-    margin: 6,
-    // textAlign: 'center'
-  }
 });
 
 export default App;
