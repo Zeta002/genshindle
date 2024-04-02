@@ -1,43 +1,53 @@
 import {StyleSheet, View, Text} from "react-native";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
-const [characters, setCharacters] = useState([]);
 
-async function getAllCharactersFromAPI() {
+// async function getAllCharactersFromAPI() {
+//   try {
+//     let response = await fetch('https://genshin.jmp.blue/characters');
+//     const responseJson = await response.json();
+//     setCharacters(responseJson);
+//   } catch (error) {
+//     console.error(error);
+//   } finally {
+//     setIsLoading(false);
+//   }
+// }
+
+export default function Game()  {
+  const [isLoading, setIsLoading] = useState(true);
+  const [characters, setCharacters] = useState([]);
+
+
+  const getAllCharactersFromAPI = async () => {
     try {
-        let response = await fetch('https://genshin.jmp.blue/characters');
-        let responseJson = await response.json();
-        return responseJson;
+      let response = await fetch('https://genshin.jmp.blue/characters');
+      const responseJson = await response.json();
+      setCharacters(responseJson);
     } catch (error) {
-        console.error(error);
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
-}
+  };
 
-async function getCharacterFromAPI() {
-    try {
-        let response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
-        let responseJson = await response.json();
-        return responseJson;
-    } catch (error) {
-        console.error(error);
-    }
-}
+  useEffect(() => {
+    getAllCharactersFromAPI().then(() => console.log("Characters loaded"));
+  }, []);
 
-export default function Game() {
-
-
-    return (
-        <View style={styles.container}>
-            <Text>Game</Text>
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <Text>Characters:</Text>
+      {isLoading ? <Text>Loading...</Text> : <Text>{JSON.stringify(characters)}</Text>}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
