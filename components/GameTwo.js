@@ -1,11 +1,13 @@
-import {StyleSheet, Text, View, TextInput, Button} from "react-native";
-import {useEffect, useState} from "react";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
 
-export default function Game() {
-
+export default function GameTwo() {
   const [isLoading, setIsLoading] = useState(true);
+  const [characters, setCharacters] = useState([]);
   const [guessedCharacter, setGuessedCharacter] = useState(null);
-  let [characters, setCharacters] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [commonProperties, setCommonProperties] = useState({});
+  const [suggestedCharacters, setSuggestedCharacters] = useState([]);
 
   const versions = {
     '2020-09-28': '1.0',
@@ -40,6 +42,16 @@ export default function Game() {
     '2024-01-31': '4.4'
   }
 
+  const simplifiedCharacters = characters.map(character => {
+    return {
+      name: character.name,
+      vision: character.vision,
+      weapon: character.weapon,
+      nation: character.nation,
+      version: getCharacterVersion(character, versions)
+    };
+  });
+
   async function getAllCharactersFromAPI() {
     try {
       let response = await fetch('https://genshin.jmp.blue/characters');
@@ -62,18 +74,7 @@ export default function Game() {
       setCharacters(charactersWithType);
     } catch (error) {
       console.error(error);
-    } finally {
-      setIsLoading(false);
     }
-  }
-
-  function getRandomCharacter(list) {
-    const randomIndex = Math.floor(Math.random() * list.length);
-    return list[randomIndex];
-  }
-
-  function removeTraveler() {
-    return characters.filter(character => character.name !== "Traveler");
   }
 
   function getCharacterVersion(character, versions) {
@@ -95,97 +96,112 @@ export default function Game() {
     return versions[Object.keys(versions)[versionTimestamps.length - 1]];
   }
 
-  function compareCharacters(character1, character2) {
-    let commonProperties = {};
-
-    for (let property in character1) {
-      if (character1[property] === character2[property]) {
-        commonProperties[property] = character1[property];
-      }
-    }
-
-    return commonProperties;
-  }
-
-  useEffect(() => {
-    getAllCharactersFromAPI().then(() => {
-      const simplifiedCharacters = characters.map(character => {
-        return {
-          name: character.name,
-          vision: character.vision,
-          weapon: character.weapon,
-          nation: character.nation,
-          version: getCharacterVersion(character, versions)
-        };
-      });
-
-      setGuessedCharacter(getRandomCharacter(simplifiedCharacters));
-      console.log("Characters loaded");
-    });
-  }, []);
-
-
-
-// Utilisation de la fonction
-  const simplifiedCharacters = characters.map(character => {
-    return {
-      name: character.name,
-      vision: character.vision,
-      weapon: character.weapon,
-      nation: character.nation,
-      version: getCharacterVersion(character, versions)
-    };
-  });
-
-  const [inputValue, setInputValue] = useState('');
-
-  function handleInputChange(text) {
+  const handleInputChange = (text) => {
     setInputValue(text);
-  }
+    const suggestions = characters.filter(character =>
+      character.name.toLowerCase().startsWith(text.toLowerCase())
+    );
+    setSuggestedCharacters(suggestions);
+  };
 
-  function handleButtonClick() {
-    const guessedCharacter = characters.find(character => character.name.toLowerCase() === inputValue.toLowerCase());
+  const handleButtonClick = () => {
 
-    if (guessedCharacter) {
-      const commonProperties = compareCharacters(guessedCharacter, characters[0]);
-      console.log(commonProperties);
+    const proposedCharacter = characters.find(character => character.name.toLowerCase() === inputValue.toLowerCase());
+    if (proposedCharacter) {
+      const commonProps = compareCharacters(proposedCharacter, guessedCharacter);
+      setCommonProperties(commonProps);
     } else {
       console.log('Character not found');
     }
-  }
+  };
+
+  const restartGame = () => {
+
+    setGuessedCharacter(characters[Math.floor(Math.random() * characters.length)]);
+    setCommonProperties({});
+  };
+
+  const compareCharacters = (character1, character2) => {
+
+    let commonProps = {};
+    for (let prop in character1) {
+      if (character1[prop] === character2[prop]) {
+        commonProps[prop] = character1[prop];
+      }
+    }
+    return commonProps;
+  };
+
+  useEffect(() => {
+    getAllCharactersFromAPI().then(() => {
+      setGuessedCharacter(characters[Math.floor(Math.random() * simplifiedCharacters.length)]);
+      setIsLoading(false);
+    });
+  }, []);
 
   return (
-    <View style={styles.characters}>
-      <Text>Guess:</Text>
-      <TextInput
-        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-        onChangeText={handleInputChange}
-        value={inputValue}
-      />
-      <Button
-        onPress={handleButtonClick}
-        title="Submit"
-        color="#841584"
-      />
+    <View style={styles.container}>
       {isLoading ? (
         <Text>Loading...</Text>
       ) : (
-        <View>
+        <View style={styles.characterInfo}>
           <Text>{guessedCharacter.name} is a {guessedCharacter.version} character</Text>
           <Text>Common properties with the first character:</Text>
           {Object.keys(commonProperties).map((key, index) => (
-            <Text key={index}>{key}: {commonProperties[key]}</Text>
+            <Text key={index} style={styles.commonProperty}>{key}: {commonProperties[key]}</Text>
           ))}
         </View>
       )}
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          onChangeText={handleInputChange}
+          value={inputValue}
+        />
+        <FlatList
+          data={suggestedCharacters}
+          renderItem={({ item }) => <Text>{item.name}</Text>}
+          keyExtractor={item => item.name}
+        />
+        <Button
+          onPress={handleButtonClick}
+          title="Submit"
+          color="#841584"
+        />
+        {Object.keys(commonProperties).length > 0 && (
+          <Button
+            onPress={restartGame}
+            title="Restart Game"
+            color="#841584"
+          />
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  characters: {
+  container: {
     flex: 1,
     backgroundColor: '#fff',
+    justifyContent: 'space-between',
+  },
+  characterInfo: {
+    flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputContainer: {
+    paddingBottom: 20,
+    paddingHorizontal: 10,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+  },
+  commonProperty: {
+    color: 'green',
   },
 });

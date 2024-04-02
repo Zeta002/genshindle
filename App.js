@@ -1,12 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Game from "./components/Game";
+import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import Game from "./components/GameTwo";
+import GameTwo from "./components/GameTwo";
+import GameThree from "./components/GameThree";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Game />
-      <Text> test Open up App.js to start working on your app!</Text>
+      <GameThree />
       <StatusBar style="auto" />
     </View>
   );
