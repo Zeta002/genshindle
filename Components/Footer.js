@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
-import {TextInput, View} from "react-native";
-import {Picker} from "@react-native-picker/picker";
+import React, {useState} from 'react';
+import {View} from "react-native";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 function Footer() {
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'Amber', value: 'Amber Test'},
+    {label: 'Albedo', value: 'Albedo Test'},
+    {label: 'Zhongli', value: 'Zhongli Test'},
+    {label: 'Hu-tao', value: 'Hu-tao Test'},
+  ]);
+
+  function openDropDownPicker() {
+    if(!open) setOpen(true);
+  }
 
   return (
+
     <View style={{
       width: '100%',
       height: 80,
@@ -15,25 +27,24 @@ function Footer() {
       position: 'absolute',
       bottom: 0,
     }}>
-      <TextInput style={{
-        height: 25,
-        width: '80%',
-        borderColor: 'black',
-        backgroundColor: 'white',
-        borderWidth: 1,
-        padding: 5,
-        borderRadius: 5,
-      }}
-                 placeholder={"Find a character.."}/>
-      <Picker
-        selectedValue={selectedValue}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-      >
-        <Picker.Item label="Amber" value="Amber Test" />
-        <Picker.Item label="Albedo" value="Albedo Test" />
-        <Picker.Item label="Zhongli" value="Zhongli Test" />
-        <Picker.Item label="Hu-tao" value="Hu-tao Test" />
-      </Picker>
+
+      <DropDownPicker
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+        containerStyle={{
+          height: 50,
+          width: '80%',
+        }}
+        style={{
+          backgroundColor: '#fafafa'
+        }}
+        placeholder={'Select a character'}
+      />
+
     </View>
   );
 }
