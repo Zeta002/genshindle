@@ -1,52 +1,76 @@
-import React, {useState} from 'react';
-import {View} from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
+import React from 'react';
+import {View, Dimensions} from "react-native";
+import RNPickerSelect from 'react-native-picker-select';
 
 function Footer() {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
+  const screenHeight = Dimensions.get('window').height;
+  const items = [
     {label: 'Amber', value: 'Amber Test'},
     {label: 'Albedo', value: 'Albedo Test'},
     {label: 'Zhongli', value: 'Zhongli Test'},
     {label: 'Hu-tao', value: 'Hu-tao Test'},
-  ]);
-
-  function openDropDownPicker() {
-    if(!open) setOpen(true);
-  }
+    {label: 'Ganyu', value: 'Ganyu Test'},
+    {label: 'Diluc', value: 'Diluc Test'},
+    {label: 'Klee', value: 'Klee Test'},
+    {label: 'Jean', value: 'Jean Test'},
+    {label: 'Venti', value: 'Venti Test'},
+    {label: 'Xiao', value: 'Xiao Test'},
+    {label: 'Keqing', value: 'Keqing Test'},
+    {label: 'Mona', value: 'Mona Test'},
+    {label: 'Qiqi', value: 'Qiqi Test'},
+    {label: 'Tartaglia', value: 'Tartaglia Test'},
+    {label: 'Xingqiu', value: 'Xingqiu Test'},
+    {label: 'Chongyun', value: 'Chongyun Test'},
+    {label: 'Bennett', value: 'Bennett Test'},
+    {label: 'Fischl', value: 'Fischl Test'},
+    {label: 'Sucrose', value: 'Sucrose Test'},
+    {label: 'Razor', value: 'Razor Test'},
+    {label: 'Barbara', value: 'Barbara Test'},
+    {label: 'Noelle', value: 'Noelle Test'},
+    {label: 'Beidou', value: 'Beidou Test'},
+    {label: 'Xinyan', value: 'Xinyan Test'},
+    {label: 'Ningguang', value: 'Ningguang Test'},
+    {label: 'Diona', value: 'Diona Test'},
+    {label: 'Xiangling', value: 'Xiangling Test'},
+    {label: 'Lisa', value: 'Lisa Test'},
+    {label: 'Kaeya', value: 'Kaeya Test'}
+  ];
 
   return (
-
     <View style={{
+      position: 'absolute',
+      bottom: 0,
       width: '100%',
-      height: 80,
+      height: screenHeight * 0.14,
       backgroundColor: 'darkgray',
       justifyContent: 'center',
       alignItems: 'center',
-      position: 'absolute',
-      bottom: 0,
+      borderTopWidth: 1,
+      paddingTop: 12,
+      paddingBottom: 12,
     }}>
 
-      <DropDownPicker
-        open={open}
-        value={value}
+      <RNPickerSelect
+        onValueChange={(value) => console.log(value)}
         items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-        containerStyle={{
-          height: 50,
-          width: '80%',
-        }}
         style={{
-          backgroundColor: '#fafafa'
+          inputIOS: {
+            height: 50,
+            width: '80%',
+            backgroundColor: '#fafafa',
+            textAlign: 'center',
+          },
+          inputAndroid: {
+            height: 50,
+            width: '80%',
+            backgroundColor: '#fafafa',
+            textAlign: 'center',
+          },
         }}
-        placeholder={'Select a character'}
       />
 
     </View>
   );
-}
+} // Cette accolade fermante était manquante.
 
 export default Footer;
