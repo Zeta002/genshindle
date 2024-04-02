@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Dimensions} from "react-native";
+import {Dimensions, View} from "react-native";
 import RNPickerSelect from 'react-native-picker-select';
 
 function Footer() {
