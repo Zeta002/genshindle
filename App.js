@@ -1,20 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Button, Text, View } from 'react-native';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    const [character, setCharacter] = useState(null);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    useEffect(() => {
+        fetch('https://genshin.jmp.blue/characters')
+            .then(response => response.json())
+            .then(data => {
+                const randomIndex = Math.floor(Math.random() * data.length);
+                const randomCharacter = data[randomIndex];
+                console.log(randomCharacter);
+                setCharacter(randomCharacter);
+            })
+            .catch((error) => {
+                console.error('Erreur:', error);
+            });
+    }, []);
+
+    const handlePress = () => {
+        Alert.alert('Button pressed!', 'You pressed the Guess button.');
+    };
+
+    return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            {character ? (
+                <>
+                    <Text>{`Name: ${character.name ? character.name : 'Loading...'}`}</Text>
+                    <Button title="Guess" onPress={handlePress} />
+                </>
+            ) : (
+                <Text>Loading...</Text>
+            )}
+        </View>
+    );
+}
