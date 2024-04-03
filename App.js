@@ -1,7 +1,5 @@
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
-import Game from "./components/GameTwo";
-import GameTwo from "./components/GameTwo";
-import GameThree from "./components/GameThree";
+import GameThree from "./components/Game";
 
 export default function App() {
   return (
