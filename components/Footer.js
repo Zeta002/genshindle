@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, View} from "react-native";
-import RNPickerSelect from 'react-native-picker-select';
+import DropDownPicker from "react-native-dropdown-picker";
 
 function Footer() {
   const screenHeight = Dimensions.get('window').height; // Récupère la hauteur de l'écran
+  let [open, setOpen] = useState(false); // Création d'un état local pour contrôler l'ouverture du DropDownPicker
+  const [selectedValue, setSelectedValue] = useState("Default"); // Ajout de l'état pour la valeur sélectionnée
 
   // TODO: Data hard coded, to be replaced by an API call stored in the Redux store later
   const items = [
@@ -41,36 +43,23 @@ function Footer() {
   return (
     <View style={{
       position: 'absolute', // Positionnement absolu
-      bottom: 0, // En bas de l'écran
+      bottom: -110, // En bas de l'écran
       width: '100%', // Largeur de 100% de l'écran
-      height: screenHeight * 0.1, // Hauteur de 10% de la hauteur de l'écran
-      backgroundColor: 'darkgray', // Couleur de fond
-      justifyContent: 'center', // Justification des éléments au centre
-      alignItems: 'center', // Alignement des éléments au centre
-      borderTopWidth: 1, // Ajout d'une bordure en haut
-      paddingTop: 12, // Centrage du component
-      paddingBottom: 12, // Centrage du component
+      height: screenHeight * 0.4, // Hauteur de 10% de la hauteur de l'écran
+      justifyContent: 'center', // Justification verticale des éléments au centre
+      alignItems: 'center', // Alignement horizontal des éléments au centre
     }}>
 
-      <RNPickerSelect
-        onValueChange={(value) => console.log(value)}
-        items={items}
-        style={{ // Simplement un style par appareils
-          inputIOS: {
-            height: 50, // Hauteur de l'élément
-            width: '80%', // Largeur de l'élément
-            backgroundColor: '#fafafa', // Couleur de fond
-            textAlign: 'center', // Alignement du texte
-            alignSelf: 'center', // Ajouté pour centrer le RNPickerSelect
-          },
-          inputAndroid: {
-            height: 50, // Hauteur de l'élément
-            width: '80%', // Largeur de l'élément
-            backgroundColor: '#fafafa', // Couleur de fond
-            textAlign: 'center', // Alignement du texte
-            alignSelf: 'center', // Ajouté pour centrer le RNPickerSelect
-          },
-        }}
+      <DropDownPicker
+        items={items} // Associe la liste des items
+        defaultValue={items[0].value} // Valeur par défaut
+        containerStyle={{height: 50, width: '80%'}} // Style du conteneur
+        searchable={true} // Permet la recherche
+        searchPlaceholder={"Cherche un personnage"} // Placeholder de la recherche
+        open={open} // Propriété open
+        setOpen={setOpen} // Propriété setOpen
+        setValue={setSelectedValue} // Propriété setValue
+        value={selectedValue} // Propriété value
       />
 
     </View>
