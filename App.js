@@ -7,7 +7,6 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ecf0f1" />
       <Header />
-      <Text>Open up App.js to start working on your app!</Text>
       <Footer />
     </View>
   );
