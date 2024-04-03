@@ -1,31 +1,26 @@
-//import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import {Provider} from 'react-redux';
+import store from './store/store';
+import Try from './components/Try'; // Assurez-vous d'importer votre composant
 
-import {useSelector} from 'react-redux';
+const App = () => {
 
-import {Provider} from "react-redux";
-import store from "./store/store";
 
-const nbTry = useSelector(state => state.nbTry)
-
-export default function App() {
   return (
     <Provider store={store}>
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>{nbTry}</Text>
-        <StatusBar style="auto" />
-      </View>
+      <Try />
     </Provider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });
 

@@ -1,10 +1,22 @@
-import { configureStore } from '@reduxjs/toolkit'
+import {createSlice, configureStore} from "@reduxjs/toolkit";
 
-export default configureStore({
-    reducer: {
-        totalTry : 5,
-        nbTry : 5,
-        Winstreak : 0
-        //characters :
-    },
+const counterSlice = createSlice({
+    name: 'try',
+    initialState: {nbTry: 5},
+    reducers: {
+        increment(state) {
+            state.nbTry++;
+        },
+        decrement(state) {
+            state.nbTry--;
+        }
+    }
 })
+
+export const {increment, decrement} = counterSlice.actions;
+
+const store = configureStore({
+    reducer: counterSlice
+})
+
+export default store;
