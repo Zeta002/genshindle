@@ -55,7 +55,8 @@ function Footer() {
         defaultValue={items[0].value} // Valeur par défaut
         containerStyle={{height: 50, width: '80%'}} // Style du conteneur
         searchable={true} // Permet la recherche
-        searchPlaceholder={"Cherche un personnage"} // Placeholder de la recherche
+        placeholder={"Select a character"} // Placeholder
+        searchPlaceholder={"Search a character"} // Placeholder de la recherche
         open={open} // Propriété open
         setOpen={setOpen} // Propriété setOpen
         setValue={setSelectedValue} // Propriété setValue
