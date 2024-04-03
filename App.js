@@ -1,26 +1,28 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import store from './store/store';
-import Try from './components/Try'; // Assurez-vous d'importer votre composant
+import Try from './components/Try';
+import {Text, View, StyleSheet} from "react-native"; // Assurez-vous d'importer votre composant
 
-const App = () => {
-
-
+export default function App() {
   return (
     <Provider store={store}>
-      <Try />
+      <View style={styles.container}>
+        <Try />
+      </View>
     </Provider>
   );
-};
+}
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
+
+
 
