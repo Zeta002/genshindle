@@ -2,6 +2,9 @@ import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 
+import store from './store/store';
+import {Provider} from "react-redux";
+
 export default function App() {
   return (
     <View style={styles.container}>
