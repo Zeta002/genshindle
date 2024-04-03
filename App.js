@@ -1,5 +1,5 @@
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
-
+import Footer from "./components/Footer";
 import Header from "./Components/Header";
 
 export default function App() {
@@ -8,15 +8,21 @@ export default function App() {
       <StatusBar barStyle="dark-content" backgroundColor="#ecf0f1" />
       <Header />
       <Text>Open up App.js to start working on your app!</Text>
+      <Footer />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flex: 1, // Prend tout l'espace disponible
+    backgroundColor: '#fff', // Couleur de fond
+    alignItems: 'center', // Aligne les éléments au centre
+    justifyContent: 'space-between', // Aligne le contenu au centre
+  },
+  content: {
+    flex: 1, // Prend tout l'espace disponible
+    justifyContent: 'center', // Aligne le contenu au centre
+    alignItems: 'center', // Aligne les éléments au centre
   },
 });
