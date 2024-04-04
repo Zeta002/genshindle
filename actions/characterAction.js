@@ -69,3 +69,28 @@ export const loadCharacters = () => {
       });
   };
 }
+
+export const selectRandomCharacter = () => {
+  return (dispatch, getState) => {
+    const characters = getState().char.characters;
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    const randomCharacter = characters[randomIndex];
+    dispatch({
+      type: 'SELECT_RANDOM_CHARACTER',
+      payload: randomCharacter
+    });
+  };
+}
+
+export const addProposition = (proposition) => {
+  return {
+    type: 'ADD_PROPOSITION',
+    payload: proposition
+  };
+}
+
+export const clearPropositions = () => {
+  return {
+    type: 'CLEAR_PROPOSITIONS'
+  };
+}

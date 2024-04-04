@@ -2,6 +2,7 @@ import {Image, Text, TouchableOpacity, View} from "react-native";
 import {useState} from "react";
 import bookIcon from "../img/book.png";
 import controllerIcon from "../img/controller.png";
+import {useSelector} from "react-redux";
 
 
 function Header () {
@@ -12,6 +13,9 @@ function Header () {
     setCurrentImage(currentImage === bookIcon ? controllerIcon : bookIcon);
     // TODO: Change page to history
   };
+
+  const tries = useSelector(state => state.tries.tries);
+  const maxTries = useSelector(state => state.tries.maxTries);
 
   return (
     <View style={{
@@ -37,7 +41,7 @@ function Header () {
           {uri: notFoundGifURI}} width={120} height={80}></Image>
         <View>
           {/* TODO: Insert dynamic value by API */}
-          <Text>try 5/5</Text>
+          <Text>try {tries}/{maxTries}</Text>
           <Text>Winstreak : 0</Text>
           <Text>Best Winstreak : 0</Text>
         </View>

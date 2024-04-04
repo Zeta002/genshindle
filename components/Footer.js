@@ -1,44 +1,40 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, View} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import {useDispatch, useSelector} from "react-redux";
+import { addProposition } from '../actions/characterAction';
+import {decrementTries} from "../actions/triesActions";
+
 
 function Footer() {
   const screenHeight = Dimensions.get('window').height; // Récupère la hauteur de l'écran
   let [open, setOpen] = useState(false); // Création d'un état local pour contrôler l'ouverture du DropDownPicker
-  const [selectedValue, setSelectedValue] = useState("Default"); // Ajout de l'état pour la valeur sélectionnée
+  const [selectedValue, setSelectedValue] = useState(null);
 
-  // TODO: Data hard coded, to be replaced by an API call stored in the Redux store later
-  const items = [
-    {label: 'Amber', value: 'Amber Test'},
-    {label: 'Albedo', value: 'Albedo Test'},
-    {label: 'Zhongli', value: 'Zhongli Test'},
-    {label: 'Hu-tao', value: 'Hu-tao Test'},
-    {label: 'Ganyu', value: 'Ganyu Test'},
-    {label: 'Diluc', value: 'Diluc Test'},
-    {label: 'Klee', value: 'Klee Test'},
-    {label: 'Jean', value: 'Jean Test'},
-    {label: 'Venti', value: 'Venti Test'},
-    {label: 'Xiao', value: 'Xiao Test'},
-    {label: 'Keqing', value: 'Keqing Test'},
-    {label: 'Mona', value: 'Mona Test'},
-    {label: 'Qiqi', value: 'Qiqi Test'},
-    {label: 'Tartaglia', value: 'Tartaglia Test'},
-    {label: 'Xingqiu', value: 'Xingqiu Test'},
-    {label: 'Chongyun', value: 'Chongyun Test'},
-    {label: 'Bennett', value: 'Bennett Test'},
-    {label: 'Fischl', value: 'Fischl Test'},
-    {label: 'Sucrose', value: 'Sucrose Test'},
-    {label: 'Razor', value: 'Razor Test'},
-    {label: 'Barbara', value: 'Barbara Test'},
-    {label: 'Noelle', value: 'Noelle Test'},
-    {label: 'Beidou', value: 'Beidou Test'},
-    {label: 'Xinyan', value: 'Xinyan Test'},
-    {label: 'Ningguang', value: 'Ningguang Test'},
-    {label: 'Diona', value: 'Diona Test'},
-    {label: 'Xiangling', value: 'Xiangling Test'},
-    {label: 'Lisa', value: 'Lisa Test'},
-    {label: 'Kaeya', value: 'Kaeya Test'}
-  ];
+  const dispatch = useDispatch();
+
+  const handleProposition = (proposition) => {
+    const character = characters.find(character => character.name === proposition);
+    if (character) {
+      dispatch(addProposition(character));
+    }
+  };
+
+  useEffect(() => {
+    if (selectedValue) {
+      handleProposition(selectedValue);
+      dispatch(decrementTries());
+    }
+  }, [selectedValue]);
+
+  const characters = useSelector(state => state.char.characters); // Récupère les personnages du store
+
+  const items = characters ? characters.map((character) => {
+    return {
+      label: character.name,
+      value: character.name,
+    }
+  }) : [];
 
   return (
     <View style={{
