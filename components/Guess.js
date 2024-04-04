@@ -8,6 +8,7 @@ function Guess() {
   const dispatch = useDispatch();
   const selectedCharacter = useSelector(state => state.char.selectedCharacter);
 
+  // Sélectionne un perso aléatoire
   useEffect(() => {
     dispatch(selectRandomCharacter());
   }, [dispatch]);

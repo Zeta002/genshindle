@@ -10,10 +10,11 @@ import {loseGame, openModal, winGame} from "../actions/gameActions";
 function Footer() {
   const screenHeight = Dimensions.get('window').height; // Récupère la hauteur de l'écran
   let [open, setOpen] = useState(false); // Création d'un état local pour contrôler l'ouverture du DropDownPicker
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [selectedValue, setSelectedValue] = useState(null); // valeur du picker
 
   const dispatch = useDispatch();
 
+  // Vérifie si une proposition a été faite et ajoute la proposition au store
   const handleProposition = (proposition) => {
     const character = characters.find(character => character.name === proposition);
     if (character) {
@@ -21,6 +22,7 @@ function Footer() {
     }
   };
 
+  // Vérifie si une proposition a été faite et décrémente les essais
   useEffect(() => {
     if (selectedValue) {
       handleProposition(selectedValue);
@@ -31,15 +33,7 @@ function Footer() {
   const tries = useSelector(state => state.tries.tries);
   const isModalVisible = useSelector(state => state.game.isModalVisible);
 
-  useEffect(() => {
-    if (tries === 0) {
-      setSelectedValue(null);
-      dispatch(loseGame());
-      dispatch(setWinStreak(0))
-      dispatch(openModal());
-    }
-  }, [tries]);
-
+  // Vérifie si la partie est finie
   useEffect(() => {
     if (selectedCharacter.name === selectedValue) {
       setSelectedValue(null);
@@ -47,11 +41,18 @@ function Footer() {
       dispatch(incrementWinStreak())
       dispatch(openModal());
     }
+    else if (tries === 0) {
+      setSelectedValue(null);
+      dispatch(loseGame());
+      dispatch(setWinStreak(0))
+      dispatch(openModal());
+    }
   }, [tries]);
 
   const characters = useSelector(state => state.char.characters); // Récupère les personnages du store
   const selectedCharacter = useSelector(state => state.char.selectedCharacter); // Récupère le personnage sélectionné du store
 
+  // Crée une liste d'items pour le DropDownPicker
   const items = characters ? characters.map((character) => {
     return {
       label: character.name,

@@ -12,9 +12,9 @@ const TableComponent = ({ data, selectedCharacter }) => {
   // Récupérer les clés des objets pour créer les en-têtes
   const headers = Object.keys(data[0]);
 
+  // Fonction pour obtenir la flèche de comparaison
   const getArrow = (itemVersion, selectedVersion) => {
     const diff = selectedVersion - itemVersion;
-    console.log(diff);
     switch (true) {
       case diff <= 0.8 && diff > 0:
         return '↑';

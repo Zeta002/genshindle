@@ -14,6 +14,7 @@ function AppContent() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
+  // Charge la lsite de perso plus le premier perso à trouver
   useEffect(() => {
     dispatch(loadCharacters())
       .then(() => {
