@@ -26,17 +26,10 @@ function AppContent() {
       });
   }, [dispatch]);
 
-  const tries = useSelector(state => state.tries.tries);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  useEffect(() => {
-    if (tries === 0) {
-      setIsModalVisible(true);
-    }
-  }, [tries]);
+  const isModalVisible = useSelector(state => state.game.isModalVisible);
 
   const closeModal = () => {
-    setIsModalVisible(false);
+    dispatch({ type: 'CLOSE_MODAL' });
   };
 
   if (loading) {

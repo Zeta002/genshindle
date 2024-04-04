@@ -16,6 +16,8 @@ function Header () {
 
   const tries = useSelector(state => state.tries.tries);
   const maxTries = useSelector(state => state.tries.maxTries);
+  const winStreak = useSelector(state => state.tries.winStreak);
+  const bestWinStreak = useSelector(state => state.tries.bestWinStreak);
 
   return (
     <View style={{
@@ -42,8 +44,8 @@ function Header () {
         <View>
           {/* TODO: Insert dynamic value by API */}
           <Text>try {tries}/{maxTries}</Text>
-          <Text>Winstreak : 0</Text>
-          <Text>Best Winstreak : 0</Text>
+          <Text>Winstreak : {winStreak}</Text>
+          <Text>Best Winstreak : {bestWinStreak}</Text>
         </View>
       </View>
 

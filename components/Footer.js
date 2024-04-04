@@ -3,7 +3,8 @@ import {Dimensions, View} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import {useDispatch, useSelector} from "react-redux";
 import { addProposition } from '../actions/characterAction';
-import {decrementTries} from "../actions/triesActions";
+import {decrementTries, incrementWinStreak, setWinStreak} from "../actions/scoresActions";
+import {loseGame, openModal, winGame} from "../actions/gameActions";
 
 
 function Footer() {
@@ -27,7 +28,29 @@ function Footer() {
     }
   }, [selectedValue]);
 
+  const tries = useSelector(state => state.tries.tries);
+  const isModalVisible = useSelector(state => state.game.isModalVisible);
+
+  useEffect(() => {
+    if (tries === 0) {
+      setSelectedValue(null);
+      dispatch(loseGame());
+      dispatch(setWinStreak(0))
+      dispatch(openModal());
+    }
+  }, [tries]);
+
+  useEffect(() => {
+    if (selectedCharacter.name === selectedValue) {
+      setSelectedValue(null);
+      dispatch(winGame());
+      dispatch(incrementWinStreak())
+      dispatch(openModal());
+    }
+  }, [tries]);
+
   const characters = useSelector(state => state.char.characters); // Récupère les personnages du store
+  const selectedCharacter = useSelector(state => state.char.selectedCharacter); // Récupère le personnage sélectionné du store
 
   const items = characters ? characters.map((character) => {
     return {
