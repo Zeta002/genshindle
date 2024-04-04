@@ -12,6 +12,25 @@ const TableComponent = ({ data, selectedCharacter }) => {
   // Récupérer les clés des objets pour créer les en-têtes
   const headers = Object.keys(data[0]);
 
+  const getArrow = (itemVersion, selectedVersion) => {
+    const diff = selectedVersion - itemVersion;
+    console.log(diff);
+    switch (true) {
+      case diff <= 0.8 && diff > 0:
+        return '↑';
+      case diff > 0.8:
+        return '↑↑';
+      case diff >= -0.8 && diff < 0:
+        return '↓';
+      case diff < -0.8:
+        return '↓↓';
+      case diff === 0:
+        return '';
+      default:
+        return '↑';
+    }
+  };
+
   return (
     <View style={{width: screenWidth - 20, marginTop: 10}}>
       <DataTable>
@@ -25,6 +44,7 @@ const TableComponent = ({ data, selectedCharacter }) => {
           <DataTable.Row key={index}>
             {headers.map(header => (
               <DataTable.Cell key={header} style={[ item[header] === selectedCharacter[header] ? [styles.green, styles.cell] : [styles.red, styles.cell]]}>
+                {header === 'version' ? getArrow(item[header], selectedCharacter[header]) : ''}
                 {item[header]}
               </DataTable.Cell>
             ))}

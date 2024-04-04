@@ -15,7 +15,8 @@ function Guess() {
   return (
     <View>
       <Text>Guess</Text>
-      {selectedCharacter && <Text>{selectedCharacter.name}</Text>}
+      {/*Affiche le nom du perso à trouver*/}
+      {/*{selectedCharacter && <Text>{selectedCharacter.name}</Text>}*/}
     </View>
   )
 }
